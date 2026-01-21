@@ -1,183 +1,213 @@
--- Script para adicionar músicas customizadas ao GitHub
--- Por TALENTLESS
+-- Sistema GitHub para TALENTLESS
+-- UI identica ao sistema local antigo
 
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local CoreGui = game:GetService("CoreGui")
 
--- Criar GUI de upload
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "AddSongGitHub"
-ScreenGui.Parent = CoreGui
-ScreenGui.ResetOnSpawn = false
+-- Instances:
+local addgui = Instance.new("ScreenGui")
+local newsongframe = Instance.new("Frame")
+local insertscript = Instance.new("TextBox")
+local newsonglabel = Instance.new("TextLabel")
+local cancelButton = Instance.new("TextButton")
+local insertsongName = Instance.new("TextBox")
+local submitSong = Instance.new("TextButton")
+local UIListLayout = Instance.new("UIListLayout")
 
-local MainFrame = Instance.new("Frame")
-MainFrame.Name = "MainFrame"
-MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-MainFrame.BorderSizePixel = 0
-MainFrame.Position = UDim2.new(0.5, -200, 0.5, -200)
-MainFrame.Size = UDim2.new(0, 400, 0, 400)
-MainFrame.Active = true
-MainFrame.Draggable = true
+--Properties:
+addgui.Name = "addgui"
+addgui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+addgui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(0, 10)
-UICorner.Parent = MainFrame
+newsongframe.Name = "newsongframe"
+newsongframe.Parent = addgui
+newsongframe.AnchorPoint = Vector2.new(0.5, 0.5)
+newsongframe.BackgroundColor3 = Color3.fromRGB(33, 33, 41)
+newsongframe.BorderColor3 = Color3.fromRGB(0, 0, 0)
+newsongframe.BorderSizePixel = 0
+newsongframe.Position = UDim2.new(0.5, 0, 0.5, 0)
+newsongframe.Size = UDim2.new(0, 254, 0, 326)
 
-local Title = Instance.new("TextLabel")
-Title.Name = "Title"
-Title.Parent = MainFrame
-Title.BackgroundTransparency = 1
-Title.Position = UDim2.new(0, 0, 0, 10)
-Title.Size = UDim2.new(1, 0, 0, 40)
-Title.Font = Enum.Font.SourceSansBold
-Title.Text = "Adicionar Musica ao GitHub"
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextSize = 24
+insertscript.Name = "insertscript"
+insertscript.Parent = newsongframe
+insertscript.BackgroundColor3 = Color3.fromRGB(96, 102, 121)
+insertscript.BorderColor3 = Color3.fromRGB(76, 82, 101)
+insertscript.BorderSizePixel = 4
+insertscript.LayoutOrder = 2
+insertscript.Position = UDim2.new(0.0708699971, 0, 0.257669985, 0)
+insertscript.Size = UDim2.new(0, 218, 0, 123)
+insertscript.Font = Enum.Font.SourceSans
+insertscript.PlaceholderText = "Cole o codigo da musica aqui (bpm sera extraido automaticamente)"
+insertscript.Text = ""
+insertscript.TextColor3 = Color3.fromRGB(255, 255, 255)
+insertscript.TextSize = 14.000
+insertscript.TextWrapped = true
+insertscript.MultiLine = true
+insertscript.ClearTextOnFocus = false
 
-local CloseButton = Instance.new("TextButton")
-CloseButton.Name = "CloseButton"
-CloseButton.Parent = MainFrame
-CloseButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-CloseButton.Position = UDim2.new(1, -35, 0, 10)
-CloseButton.Size = UDim2.new(0, 25, 0, 25)
-CloseButton.Font = Enum.Font.SourceSansBold
-CloseButton.Text = "X"
-CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseButton.TextSize = 18
+newsonglabel.Name = "newsonglabel"
+newsonglabel.Parent = newsongframe
+newsonglabel.BackgroundColor3 = Color3.fromRGB(76, 82, 101)
+newsonglabel.BorderColor3 = Color3.fromRGB(64, 68, 90)
+newsonglabel.BorderSizePixel = 4
+newsonglabel.LayoutOrder = 1
+newsonglabel.Position = UDim2.new(0.0708699971, 0, 0.0552100018, 0)
+newsonglabel.Size = UDim2.new(0, 218, 0, 50)
+newsonglabel.Font = Enum.Font.SourceSansBold
+newsonglabel.Text = "Adicionar Musica (GitHub)"
+newsonglabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+newsonglabel.TextScaled = true
+newsonglabel.TextWrapped = true
 
-local CloseCorner = Instance.new("UICorner")
-CloseCorner.CornerRadius = UDim.new(0, 5)
-CloseCorner.Parent = CloseButton
+cancelButton.Name = "cancelButton"
+cancelButton.Parent = newsonglabel
+cancelButton.AnchorPoint = Vector2.new(1, 0)
+cancelButton.BackgroundColor3 = Color3.fromRGB(170, 85, 85)
+cancelButton.BorderColor3 = Color3.fromRGB(255, 255, 255)
+cancelButton.Position = UDim2.new(1.10091746, 10, -0.400000006, -10)
+cancelButton.Size = UDim2.new(0, 40, 0, 40)
+cancelButton.Font = Enum.Font.SourceSansBold
+cancelButton.Text = "X"
+cancelButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+cancelButton.TextSize = 45.000
 
-CloseButton.MouseButton1Click:Connect(function()
-    ScreenGui:Destroy()
+insertsongName.Name = "insertsongName"
+insertsongName.Parent = newsongframe
+insertsongName.BackgroundColor3 = Color3.fromRGB(96, 102, 121)
+insertsongName.BorderColor3 = Color3.fromRGB(64, 68, 90)
+insertsongName.BorderSizePixel = 4
+insertsongName.LayoutOrder = 3
+insertsongName.Position = UDim2.new(0.0708699971, 0, 0.69325, 0)
+insertsongName.Size = UDim2.new(0, 218, 0, 32)
+insertsongName.Font = Enum.Font.SourceSans
+insertsongName.PlaceholderText = "Nome da musica"
+insertsongName.Text = ""
+insertsongName.TextColor3 = Color3.fromRGB(255, 255, 255)
+insertsongName.TextSize = 20
+insertsongName.TextWrapped = true
+
+submitSong.Name = "submitSong"
+submitSong.Parent = newsongframe
+submitSong.BackgroundColor3 = Color3.fromRGB(85, 170, 85)
+submitSong.BorderColor3 = Color3.fromRGB(0, 0, 0)
+submitSong.BorderSizePixel = 0
+submitSong.LayoutOrder = 4
+submitSong.Position = UDim2.new(0.0708699971, 0, 0.834360003, 0)
+submitSong.Size = UDim2.new(0, 218, 0, 41)
+submitSong.Font = Enum.Font.SourceSansBold
+submitSong.Text = "Enviar"
+submitSong.TextColor3 = Color3.fromRGB(255, 255, 255)
+submitSong.TextSize = 43.000
+
+UIListLayout.Parent = newsongframe
+UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+UIListLayout.Padding = UDim.new(0, 15)
+
+-- Drag script
+local UserInputService = game:GetService("UserInputService")
+local gui = newsongframe
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+gui.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = gui.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
 end)
 
--- Campo Nome da Música
-local NameLabel = Instance.new("TextLabel")
-NameLabel.Parent = MainFrame
-NameLabel.BackgroundTransparency = 1
-NameLabel.Position = UDim2.new(0, 20, 0, 60)
-NameLabel.Size = UDim2.new(1, -40, 0, 20)
-NameLabel.Font = Enum.Font.SourceSans
-NameLabel.Text = "Nome da Musica:"
-NameLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-NameLabel.TextSize = 16
-NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+gui.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
 
-local NameBox = Instance.new("TextBox")
-NameBox.Name = "NameBox"
-NameBox.Parent = MainFrame
-NameBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-NameBox.BorderSizePixel = 0
-NameBox.Position = UDim2.new(0, 20, 0, 85)
-NameBox.Size = UDim2.new(1, -40, 0, 35)
-NameBox.Font = Enum.Font.SourceSans
-NameBox.PlaceholderText = "Ex: Minha Musica Custom"
-NameBox.Text = ""
-NameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-NameBox.TextSize = 16
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
 
-local NameCorner = Instance.new("UICorner")
-NameCorner.CornerRadius = UDim.new(0, 5)
-NameCorner.Parent = NameBox
+-- Cancel button
+cancelButton.MouseButton1Click:Connect(function()
+    addgui:Destroy()
+end)
 
--- Campo Código da Música
-local CodeLabel = Instance.new("TextLabel")
-CodeLabel.Parent = MainFrame
-CodeLabel.BackgroundTransparency = 1
-CodeLabel.Position = UDim2.new(0, 20, 0, 130)
-CodeLabel.Size = UDim2.new(1, -40, 0, 20)
-CodeLabel.Font = Enum.Font.SourceSans
-CodeLabel.Text = "Codigo da Musica (Cole aqui):"
-CodeLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-CodeLabel.TextSize = 16
-CodeLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-local CodeBox = Instance.new("TextBox")
-CodeBox.Name = "CodeBox"
-CodeBox.Parent = MainFrame
-CodeBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-CodeBox.BorderSizePixel = 0
-CodeBox.Position = UDim2.new(0, 20, 0, 155)
-CodeBox.Size = UDim2.new(1, -40, 0, 170)
-CodeBox.Font = Enum.Font.SourceSans
-CodeBox.PlaceholderText = "Cole o codigo Lua da musica aqui (bpm = 120 sera extraido automaticamente)"
-CodeBox.Text = ""
-CodeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-CodeBox.TextSize = 14
-CodeBox.TextWrapped = true
-CodeBox.MultiLine = true
-CodeBox.ClearTextOnFocus = false
-
-local CodeCorner = Instance.new("UICorner")
-CodeCorner.CornerRadius = UDim.new(0, 5)
-CodeCorner.Parent = CodeBox
-
--- Botão de Upload
-local UploadButton = Instance.new("TextButton")
-UploadButton.Name = "UploadButton"
-UploadButton.Parent = MainFrame
-UploadButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
-UploadButton.BorderSizePixel = 0
-UploadButton.Position = UDim2.new(0, 20, 0, 340)
-UploadButton.Size = UDim2.new(1, -40, 0, 40)
-UploadButton.Font = Enum.Font.SourceSansBold
-UploadButton.Text = "Upload para GitHub"
-UploadButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-UploadButton.TextSize = 18
-
-local UploadCorner = Instance.new("UICorner")
-UploadCorner.CornerRadius = UDim.new(0, 5)
-UploadCorner.Parent = UploadButton
-
--- Função de Upload
-UploadButton.MouseButton1Click:Connect(function()
-    local songName = NameBox.Text
-    local code = CodeBox.Text
+-- Submit button
+submitSong.MouseButton1Click:Connect(function()
+    local scriptInput = insertscript.Text
+    local songName = insertsongName.Text
     
-    if songName == "" or code == "" then
+    if songName == "" or scriptInput == "" then
         warn("Preencha todos os campos!")
+        submitSong.Text = "Erro: Preencha todos os campos"
+        submitSong.BackgroundColor3 = Color3.fromRGB(170, 85, 85)
+        wait(2)
+        submitSong.Text = "Enviar"
+        submitSong.BackgroundColor3 = Color3.fromRGB(85, 170, 85)
         return
     end
     
-    -- Extrair BPM do código
-    local bpm = code:match("bpm%s*=%s*(%d+)")
+    -- Extrair BPM do codigo
+    local bpm = scriptInput:match("bpm%s*=%s*(%d+)")
     if not bpm then
-        warn("BPM nao encontrado no codigo! Certifique-se que o codigo contem 'bpm = [numero]'")
-        UploadButton.Text = "Erro: BPM nao encontrado no codigo"
-        UploadButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-        wait(3)
-        UploadButton.Text = "Upload para GitHub"
-        UploadButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+        warn("BPM nao encontrado no codigo!")
+        submitSong.Text = "Erro: BPM nao encontrado"
+        submitSong.BackgroundColor3 = Color3.fromRGB(170, 85, 85)
+        wait(2)
+        submitSong.Text = "Enviar"
+        submitSong.BackgroundColor3 = Color3.fromRGB(85, 170, 85)
         return
     end
     
-    UploadButton.Text = "Fazendo upload... (BPM: " .. bpm .. ")"
-    UploadButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+    submitSong.Text = "Enviando para GitHub..."
+    submitSong.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
     
-    -- Chamar função de upload (precisa estar definida no script principal)
-    if uploadSongToGitHub then
-        local success, message = uploadSongToGitHub(songName, bpm, code, LocalPlayer.Name)
+    -- Chamar funcao de upload do Talentless.lua
+    if _G.uploadSongToGitHub then
+        local success, message = _G.uploadSongToGitHub(songName, bpm, scriptInput, LocalPlayer.Name)
         
         if success then
-            UploadButton.Text = "Sucesso!"
-            UploadButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
-            wait(2)
-            ScreenGui:Destroy()
+            submitSong.Text = "Sucesso!"
+            submitSong.BackgroundColor3 = Color3.fromRGB(85, 170, 85)
+            insertscript.Text = ""
+            insertsongName.Text = ""
+            wait(1)
+            
+            -- Atualizar lista de musicas
+            if _G.updateSongs then
+                _G.updateSongs()
+            end
+            
+            addgui:Destroy()
         else
-            UploadButton.Text = "Erro: " .. tostring(message)
-            UploadButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+            submitSong.Text = "Erro: " .. tostring(message)
+            submitSong.BackgroundColor3 = Color3.fromRGB(170, 85, 85)
             wait(3)
-            UploadButton.Text = "Upload para GitHub"
-            UploadButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+            submitSong.Text = "Enviar"
+            submitSong.BackgroundColor3 = Color3.fromRGB(85, 170, 85)
         end
     else
-        UploadButton.Text = "Funcao nao encontrada!"
-        UploadButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+        submitSong.Text = "Erro: Funcao nao encontrada"
+        submitSong.BackgroundColor3 = Color3.fromRGB(170, 85, 85)
+        warn("_G.uploadSongToGitHub nao esta disponivel!")
     end
 end)
 
-print("GUI de upload carregada!")
+print("Interface de adicionar musica carregada!")
