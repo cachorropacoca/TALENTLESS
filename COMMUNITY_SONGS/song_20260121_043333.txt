@@ -1,0 +1,19 @@
+-- Exemplo de Música Custom para TALENTLESS
+-- Nome: Exemplo Song
+-- BPM: 120
+-- Autor: System
+
+bpm = 120
+
+local notes = {
+    {time = 0, key = "C4"},
+    {time = 0.5, key = "E4"},
+    {time = 1.0, key = "G4"},
+    {time = 1.5, key = "C5"},
+    {time = 2.0, key = "G4"},
+    {time = 2.5, key = "E4"},
+    {time = 3.0, key = "C4"}
+}
+
+print("Música de exemplo carregada!")
+return notes
