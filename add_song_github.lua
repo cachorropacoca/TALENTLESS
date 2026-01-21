@@ -84,40 +84,11 @@ local NameCorner = Instance.new("UICorner")
 NameCorner.CornerRadius = UDim.new(0, 5)
 NameCorner.Parent = NameBox
 
--- Campo BPM
-local BPMLabel = Instance.new("TextLabel")
-BPMLabel.Parent = MainFrame
-BPMLabel.BackgroundTransparency = 1
-BPMLabel.Position = UDim2.new(0, 20, 0, 130)
-BPMLabel.Size = UDim2.new(1, -40, 0, 20)
-BPMLabel.Font = Enum.Font.SourceSans
-BPMLabel.Text = "BPM:"
-BPMLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-BPMLabel.TextSize = 16
-BPMLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-local BPMBox = Instance.new("TextBox")
-BPMBox.Name = "BPMBox"
-BPMBox.Parent = MainFrame
-BPMBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-BPMBox.BorderSizePixel = 0
-BPMBox.Position = UDim2.new(0, 20, 0, 155)
-BPMBox.Size = UDim2.new(1, -40, 0, 35)
-BPMBox.Font = Enum.Font.SourceSans
-BPMBox.PlaceholderText = "Ex: 120"
-BPMBox.Text = ""
-BPMBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-BPMBox.TextSize = 16
-
-local BPMCorner = Instance.new("UICorner")
-BPMCorner.CornerRadius = UDim.new(0, 5)
-BPMCorner.Parent = BPMBox
-
 -- Campo Código da Música
 local CodeLabel = Instance.new("TextLabel")
 CodeLabel.Parent = MainFrame
 CodeLabel.BackgroundTransparency = 1
-CodeLabel.Position = UDim2.new(0, 20, 0, 200)
+CodeLabel.Position = UDim2.new(0, 20, 0, 130)
 CodeLabel.Size = UDim2.new(1, -40, 0, 20)
 CodeLabel.Font = Enum.Font.SourceSans
 CodeLabel.Text = "Código da Música (Cole aqui):"
@@ -130,8 +101,8 @@ CodeBox.Name = "CodeBox"
 CodeBox.Parent = MainFrame
 CodeBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 CodeBox.BorderSizePixel = 0
-CodeBox.Position = UDim2.new(0, 20, 0, 225)
-CodeBox.Size = UDim2.new(1, -40, 0, 100)
+CodeBox.Position = UDim2.new(0, 20, 0, 155)
+CodeBox.Size = UDim2.new(1, -40, 0, 150)
 CodeBox.Font = Enum.Font.SourceSans
 CodeBox.PlaceholderText = "Cole o código Lua da música aqui..."
 CodeBox.Text = ""
@@ -146,6 +117,17 @@ CodeCorner.CornerRadius = UDim.new(0, 5)
 CodeCorner.Parent = CodeBox
 
 -- Botão de Upload
+local InfoLabel = Instance.new("TextLabel")
+InfoLabel.Parent = MainFrame
+InfoLabel.BackgroundTransparency = 1
+InfoLabel.Position = UDim2.new(0, 20, 0, 315)
+InfoLabel.Size = UDim2.new(1, -40, 0, 15)
+InfoLabel.Font = Enum.Font.SourceSans
+InfoLabel.Text = "O BPM sera extraido automaticamente do codigo"
+InfoLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+InfoLabel.TextSize = 12
+InfoLabel.TextXAlignment = Enum.TextXAlignment.Left
+
 local UploadButton = Instance.new("TextButton")
 UploadButton.Name = "UploadButton"
 UploadButton.Parent = MainFrame
@@ -165,20 +147,34 @@ UploadCorner.Parent = UploadButton
 -- Função de Upload
 UploadButton.MouseButton1Click:Connect(function()
     local songName = NameBox.Text
-    local bpm = BPMBox.Text
     local code = CodeBox.Text
     
-    if songName == "" or bpm == "" or code == "" then
+    if songName == "" or code == "" then
         warn("Preencha todos os campos!")
+        UploadButton.Text = "Preencha todos os campos!"
+        UploadButton.BackgroundColor3 = Color3.fromRGB(200, 100, 0)
+        wait(2)
+        UploadButton.Text = "Upload para GitHub"
+        UploadButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
         return
     end
     
-    if not tonumber(bpm) then
-        warn("BPM deve ser um número!")
+    -- Extrair BPM do código
+    local bpm = code:match("bpm%s*=%s*(%d+)")
+    
+    if not bpm then
+        warn("BPM não encontrado no código!")
+        UploadButton.Text = "BPM nao encontrado no codigo!"
+        UploadButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+        wait(3)
+        UploadButton.Text = "Upload para GitHub"
+        UploadButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
         return
     end
     
-    UploadButton.Text = "Fazendo upload..."
+    print("BPM detectado: " .. bpm)
+    
+    UploadButton.Text = "Fazendo upload... BPM: " .. bpm
     UploadButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
     
     -- Chamar função de upload (precisa estar definida no script principal)
