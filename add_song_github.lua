@@ -16,8 +16,8 @@ MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 MainFrame.BorderSizePixel = 0
-MainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
-MainFrame.Size = UDim2.new(0, 400, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -200)
+MainFrame.Size = UDim2.new(0, 400, 0, 400)
 MainFrame.Active = true
 MainFrame.Draggable = true
 
@@ -32,7 +32,7 @@ Title.BackgroundTransparency = 1
 Title.Position = UDim2.new(0, 0, 0, 10)
 Title.Size = UDim2.new(1, 0, 0, 40)
 Title.Font = Enum.Font.SourceSansBold
-Title.Text = "Adicionar Musica"
+Title.Text = "Adicionar Musica ao GitHub"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 24
 
@@ -75,7 +75,7 @@ NameBox.BorderSizePixel = 0
 NameBox.Position = UDim2.new(0, 20, 0, 85)
 NameBox.Size = UDim2.new(1, -40, 0, 35)
 NameBox.Font = Enum.Font.SourceSans
-NameBox.PlaceholderText = "Ex: Minha Musica"
+NameBox.PlaceholderText = "Ex: Minha Musica Custom"
 NameBox.Text = ""
 NameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 NameBox.TextSize = 16
@@ -102,9 +102,9 @@ CodeBox.Parent = MainFrame
 CodeBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 CodeBox.BorderSizePixel = 0
 CodeBox.Position = UDim2.new(0, 20, 0, 155)
-CodeBox.Size = UDim2.new(1, -40, 0, 90)
+CodeBox.Size = UDim2.new(1, -40, 0, 170)
 CodeBox.Font = Enum.Font.SourceSans
-CodeBox.PlaceholderText = "Cole o codigo Lua da musica aqui..."
+CodeBox.PlaceholderText = "Cole o codigo Lua da musica aqui (bpm = 120 sera extraido automaticamente)"
 CodeBox.Text = ""
 CodeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 CodeBox.TextSize = 14
@@ -122,10 +122,10 @@ UploadButton.Name = "UploadButton"
 UploadButton.Parent = MainFrame
 UploadButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
 UploadButton.BorderSizePixel = 0
-UploadButton.Position = UDim2.new(0, 20, 0, 255)
-UploadButton.Size = UDim2.new(1, -40, 0, 35)
+UploadButton.Position = UDim2.new(0, 20, 0, 340)
+UploadButton.Size = UDim2.new(1, -40, 0, 40)
 UploadButton.Font = Enum.Font.SourceSansBold
-UploadButton.Text = "Adicionar"
+UploadButton.Text = "Upload para GitHub"
 UploadButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 UploadButton.TextSize = 18
 
@@ -140,27 +140,22 @@ UploadButton.MouseButton1Click:Connect(function()
     
     if songName == "" or code == "" then
         warn("Preencha todos os campos!")
-        UploadButton.Text = "Erro: Campos vazios"
-        UploadButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-        wait(2)
-        UploadButton.Text = "Adicionar"
-        UploadButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
         return
     end
     
-    -- Extrair BPM do código automaticamente
+    -- Extrair BPM do código
     local bpm = code:match("bpm%s*=%s*(%d+)")
     if not bpm then
-        warn("BPM nao encontrado no codigo! Adicione 'bpm = X' no codigo.")
-        UploadButton.Text = "Erro: BPM nao encontrado"
+        warn("BPM nao encontrado no codigo! Certifique-se que o codigo contem 'bpm = [numero]'")
+        UploadButton.Text = "Erro: BPM nao encontrado no codigo"
         UploadButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
         wait(3)
-        UploadButton.Text = "Adicionar"
+        UploadButton.Text = "Upload para GitHub"
         UploadButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
         return
     end
     
-    UploadButton.Text = "Enviando..."
+    UploadButton.Text = "Fazendo upload... (BPM: " .. bpm .. ")"
     UploadButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
     
     -- Chamar função de upload (precisa estar definida no script principal)
@@ -176,7 +171,7 @@ UploadButton.MouseButton1Click:Connect(function()
             UploadButton.Text = "Erro: " .. tostring(message)
             UploadButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
             wait(3)
-            UploadButton.Text = "Adicionar"
+            UploadButton.Text = "Upload para GitHub"
             UploadButton.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
         end
     else
